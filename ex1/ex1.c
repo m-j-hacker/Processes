@@ -8,7 +8,26 @@
 
 int main(void)
 {
-    // Your code here
+    
+    int x = 100;
+    pid_t pid = fork();
+    printf("Line 14: value of x: %d\n", x);
+    if (pid == 0) {
+        x = 90;
+        printf("child: value of x: %d\n", x);
+        exit(7);
+    } else {
+        x = 80;
+        int status;
+        wait(&status);
+
+        if (WIFEXITED(status)) {
+            printf("parent: child exited with status %d\n", WEXITSTATUS(status));
+            printf("parent: value of x: %d\n", x);
+        } else {
+            printf("parent: child killed by signal, crashed, or stopped\n");
+        }
+    }
 
     return 0;
 }
